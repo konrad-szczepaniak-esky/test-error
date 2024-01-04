@@ -18,6 +18,7 @@ export function app(): express.Express {
 
   const requestHandler = (req: express.Request, res: express.Response,) => {
     const settings = 'mock-settings';
+    console.log('ERROR-TEST log')
     console.error('ERROR-TEST')
     res.render(indexHtml, {
       req,
