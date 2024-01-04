@@ -10,7 +10,7 @@
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/test-error",
+        "outputPath": "dist/apps/test-error/browser",
         "index": "apps/test-error/src/index.html",
         "main": "apps/test-error/src/main.ts",
         "polyfills": ["zone.js"],
@@ -96,6 +96,59 @@
       "options": {
         "buildTarget": "test-error:build"
       }
+    },
+    "server": {
+      "dependsOn": ["build"],
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/apps/test-error/server",
+        "main": "apps/test-error/server.ts",
+        "tsConfig": "apps/test-error/tsconfig.server.json"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false,
+          "vendorChunk": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve-ssr": {
+      "executor": "@nguniversal/builders:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "test-error:build:development",
+          "serverTarget": "test-error:server:development"
+        },
+        "production": {
+          "browserTarget": "test-error:build:production",
+          "serverTarget": "test-error:server:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "prerender": {
+      "executor": "@nguniversal/builders:prerender",
+      "options": {
+        "routes": ["/"]
+      },
+      "configurations": {
+        "development": {
+          "browserTarget": "test-error:build:development",
+          "serverTarget": "test-error:server:development"
+        },
+        "production": {
+          "browserTarget": "test-error:build:production",
+          "serverTarget": "test-error:server:production"
+        }
+      },
+      "defaultConfiguration": "production"
     }
   }
 }
